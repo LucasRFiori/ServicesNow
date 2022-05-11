@@ -1,22 +1,11 @@
 import React from "react";
 import { View, Button } from 'react-native'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { useNavigation } from '@react-navigation/native'
 
-type StackParamList = {
-  screenA: undefined;
-  screenB: undefined;
-}
-
-type StackProps = NativeStackScreenProps<StackParamList, 'screenA'>
-
-type Props = {
-  routes : StackProps
-}
-export function ScreenA({ routes } : Props) {
-
+export function ScreenA() {
+  const navigation = useNavigation();
   function openScreen() {
-    const { navigation } = routes
-    navigation.navigate('screenB')
+    navigation.navigate("screenB", { name: 'Veio da tela A' })
   }
 
   return(
