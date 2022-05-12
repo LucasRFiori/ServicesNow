@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { MaterialIcons } from '@expo/vector-icons'
-import { ScreenA } from '../screens/ScreenA';
+import { LoginPage } from '../screens/LoginPage';
 import { ScreenB } from '../screens/ScreenB';
 
 const { Screen, Navigator } = createBottomTabNavigator();
@@ -27,7 +27,7 @@ export function TabRoutes() {
               />
             )
           }}
-          component={ScreenA}
+          component={LoginPage}
         />
 
         <Screen

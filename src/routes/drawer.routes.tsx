@@ -1,6 +1,6 @@
 import { createDrawerNavigator} from '@react-navigation/drawer'
 import { MaterialIcons } from '@expo/vector-icons'
-import { ScreenA } from '../screens/ScreenA';
+import { LoginPage } from '../screens/LoginPage';
 import { ScreenB } from '../screens/ScreenB';
 
 const { Screen, Navigator } = createDrawerNavigator();
@@ -11,7 +11,7 @@ export function DrawerRoutes() {
       <Navigator> 
         <Screen
           name="screenA"
-          component={ScreenA}
+          component={LoginPage}
           options={{
             drawerLabel: 'home',
             drawerIcon: () => <MaterialIcons name='home' size={22} />

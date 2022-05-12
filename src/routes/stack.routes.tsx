@@ -1,23 +1,24 @@
 import { createNativeStackNavigator} from '@react-navigation/native-stack'
-import { ScreenA } from '../screens/ScreenA';
-import { ScreenB } from '../screens/ScreenB';
+import { LoginPage } from '../screens/LoginPage';
+import { ListAnnouncement } from '../screens/ListAnnouncement';
 
 const { Screen, Navigator } = createNativeStackNavigator();
 
 export function StackRoutes() {
   return (
     <>
-      <Navigator> 
+      <Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      > 
         <Screen
-          name="screenA"
-          options={{
-            headerShown: false
-          }}
-          component={ScreenA}
+          name="LoginPage"
+          component={LoginPage}
         />
 
         <Screen
-          name="screenB"
+          name="ListAnnouncement"
           options={{
             title: 'Tela B',
             headerTitleAlign: 'center',
@@ -26,7 +27,7 @@ export function StackRoutes() {
             },
             headerTintColor: '#fff'
           }}
-          component={ScreenB}
+          component={ListAnnouncement}
         />
       </Navigator>
     </>
