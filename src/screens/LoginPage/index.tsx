@@ -7,6 +7,7 @@ import Logo from '../../../assets/images/Logo.svg'
 import FacebookIcon from '../../../assets/images/FacebookIcon.svg'
 import GoogleIcon from '../../../assets/images/GoogleIcon.svg'
 import * as AuthSession from 'expo-auth-session'
+import { LoginButton } from "./LoginButton";
 
 type AuthResponse = {
   type: string;
@@ -55,9 +56,7 @@ export function LoginPage() {
             <Text style={styles.forgotPassText}>Forgot my password</Text>
           </Pressable>
 
-          <Pressable style={styles.loginBtn}>
-            <Text style={styles.loginBtnText}>Login</Text>
-          </Pressable>
+          <LoginButton />
 
           <View style={styles.orTextContainer}>
             <Text style={styles.orText}>Or</Text>
