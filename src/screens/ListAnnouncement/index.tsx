@@ -9,9 +9,9 @@ export function ListAnnouncement() {
   return(
     <View style={globalStyles.main}>
       <Header />
-      <View style={{ flex: 1, backgroundColor: 'blue', justifyContent: "center", alignItems: "center"}}>
+      <View style={{flex: 1, backgroundColor: 'blue', justifyContent: "center", alignItems: "center"}}>
         <Text style={{ fontSize: 24 }}>
-          {/* { name } */}
+          VAI SER FUDE
         </Text>
       </View>
       </View>
