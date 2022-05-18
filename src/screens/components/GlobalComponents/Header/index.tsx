@@ -23,53 +23,52 @@ type Profile = {
 }
 
 export function Header() {
-  // const [profile, setProfile] = useState({} as Profile);
-  // const navigation = useNavigation();
-  // const route = useRoute();
+  const [profile, setProfile] = useState({} as Profile);
+  const navigation = useNavigation();
+  const route = useRoute();
 
-  // const { token } = route.params as Params
+  const { token } = route.params as Params
   
-  // async function loadProfile() {
-  //   const response = await fetch(`https://www.googleapis.com/oauth2/v2/userinfo?alt=json&access_token=${token}`)
-  //   const userInfo = await response.json();
+  async function loadProfile() {
+    const response = await fetch(`https://www.googleapis.com/oauth2/v2/userinfo?alt=json&access_token=${token}`)
+    const userInfo = await response.json();
 
-  //   setProfile(userInfo)
-  // }
+    setProfile(userInfo)
+  }
 
-  // async function handleLogout() {
-  //   try {
-  //     await AuthSession.revokeAsync({ token }, { revocationEndpoint: 'https://oauth2.googleapis.com/revoke' });
+  async function handleLogout() {
+    try {
+      await AuthSession.revokeAsync({ token }, { revocationEndpoint: 'https://oauth2.googleapis.com/revoke' });
 
-  //     navigation.navigate("LoginPage")
-  //   } catch (error) {
-  //     console.log('ERROR XXX', error)
-  //   }
-  // }
+      navigation.navigate("LoginPage")
+    } catch (error) {
+      console.log('ERROR XXX', error)
+    }
+  }
 
-  // useEffect(() => {
-  //   loadProfile();
-  // }, [])
+  useEffect(() => {
+    loadProfile();
+  }, [])
   return(
-    // <View style={style.headerMain}>
-    //   <View style={style.userInfoContainer}>
-    //     <Image 
-    //     source={
-    //       { uri: profile.picture }
-    //     } 
-    //     style={{height: 40, width: 40, borderRadius: 25}}
-    //     />
-    //     <Text style={style.helloUser}>Hey, </Text>
-    //     <Text style={style.userName}>{profile.given_name}</Text>
-    //   </View>
-    //   <View style={style.manageIconsContainer}>
-    //     <Pressable>
-    //       <Gear size={45} color="#fff"/>
-    //     </Pressable>
-    //     <Pressable style={style.signinOutBtn} onPress={handleLogout}>
-    //       <SignOut size={45} color="#fff"/>
-    //     </Pressable>
-    //   </View>
-    // </View>
-    null
+    <View style={style.headerMain}>
+      <View style={style.userInfoContainer}>
+        <Image 
+        source={
+          { uri: profile.picture }
+        } 
+        style={{height: 40, width: 40, borderRadius: 25}}
+        />
+        <Text style={style.helloUser}>Hey, </Text>
+        <Text style={style.userName}>{profile.given_name}</Text>
+      </View>
+      <View style={style.manageIconsContainer}>
+        <Pressable>
+          <Gear size={45} color="#fff"/>
+        </Pressable>
+        <Pressable style={style.signinOutBtn} onPress={handleLogout}>
+          <SignOut size={45} color="#fff"/>
+        </Pressable>
+      </View>
+    </View>
   )
 }

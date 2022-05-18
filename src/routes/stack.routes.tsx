@@ -15,7 +15,7 @@ export function StackRoutes() {
       > 
         <Screen
           name="LoginPage"
-          component={ListAnnouncement}
+          component={LoginPage}
         />
 
         <Screen
@@ -28,7 +28,7 @@ export function StackRoutes() {
             },
             headerTintColor: '#fff'
           }}
-          component={LoginPage}
+          component={ListAnnouncement}
         />
 
         <Screen
