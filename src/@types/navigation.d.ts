@@ -5,6 +5,7 @@ export declare global {
       ListAnnouncement: {
         token: string;
       }
+      CreateAccount: undefined;
     }
   }
 }

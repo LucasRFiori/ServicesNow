@@ -1,11 +1,6 @@
 import { StyleSheet, Dimensions } from "react-native";
 
-var { height, width } = Dimensions.get('window');
 export const styles = StyleSheet.create({
-  container: {
-    alignSelf: 'stretch',
-    paddingHorizontal: width * 0.1
-  },
   logo: {
     alignItems: 'center',
     marginBottom: 50
