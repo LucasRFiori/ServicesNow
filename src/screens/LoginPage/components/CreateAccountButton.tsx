@@ -7,7 +7,7 @@ export function CreateAccountButton() {
   const navigation = useNavigation();
 
   function handleToCreateAccountPage() {
-    navigation.navigate('CreateAccount')
+    navigation.navigate('CreateAccount', { token: 'NoGoogleLogin'})
   }
 
   return (

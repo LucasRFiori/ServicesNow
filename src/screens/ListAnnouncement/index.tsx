@@ -11,7 +11,6 @@ export function ListAnnouncement() {
       <Header />
       <View style={{flex: 1, backgroundColor: 'blue', justifyContent: "center", alignItems: "center"}}>
         <Text style={{ fontSize: 24 }}>
-          VAI SER FUDE
         </Text>
       </View>
       </View>

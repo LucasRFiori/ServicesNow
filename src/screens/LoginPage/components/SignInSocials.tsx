@@ -30,7 +30,7 @@ export function SignInSocials() {
     .startAsync({ authUrl }) as AuthResponse;
 
     if(type === 'success') {
-      navigation.navigate("ListAnnouncement", { token: params.access_token })
+      navigation.navigate("CreateAccount", { token: params.access_token })
     }
   }
   

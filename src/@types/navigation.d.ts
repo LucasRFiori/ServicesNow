@@ -2,10 +2,10 @@ export declare global {
   namespace ReactNavigation {
     interface RootParamList {
       LoginPage: undefined;
-      ListAnnouncement: {
+      ListAnnouncement: undefined;
+      CreateAccount: {
         token: string;
       }
-      CreateAccount: undefined;
     }
   }
 }

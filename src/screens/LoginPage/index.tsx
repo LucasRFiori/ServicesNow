@@ -26,10 +26,6 @@ export function LoginPage() {
           <CreateAccountButton />
 
         </View>
-        {/* <Button 
-          title="Ir para pagina B"
-          onPress={openScreen}
-        /> */}
       </View>
     </View>
   )

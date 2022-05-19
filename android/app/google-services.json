@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "826174763614",
+    "project_id": "coral-loop-350019",
+    "storage_bucket": "coral-loop-350019.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:826174763614:android:e9785c67396b0c3e90bacf",
+        "android_client_info": {
+          "package_name": "com.coffecoding.servicesnow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "826174763614-slbtbc9jc8rion7eb0eg7r3ptpenrt15.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.coffecoding.servicesnow",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "826174763614-2cr17b39uskrqaigfhkamfr6s4grsurl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCx1BrSkrOgBUzbubJ-urPle_GnASeew3U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "826174763614-2cr17b39uskrqaigfhkamfr6s4grsurl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
