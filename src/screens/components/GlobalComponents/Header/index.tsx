@@ -9,12 +9,22 @@ export function Header() {
   const [userProfile, setUserProfile] = useState({} as FirebaseAuthTypes.User)
   const navigation = useNavigation();
 
+  
   useEffect(() => {
     const user = firebase.auth().currentUser;
     if (user) {
       setUserProfile(user)
     }
-  })
+
+    navigation.addListener("state", () => {
+      const user = firebase.auth().currentUser;
+      if (user) {
+        setUserProfile(user)
+      }
+      console.log('rendered')
+    })
+  }, [])
+
 
   async function handleLogout() {
     try{
@@ -25,6 +35,10 @@ export function Header() {
     }
   } // Logout
 
+  function goToEditProfile() {
+    navigation.navigate("EditProfile")
+  }
+
   return(
     <View style={style.headerMain}>
       <View style={style.userInfoContainer}>
@@ -33,14 +47,14 @@ export function Header() {
           source={
             { uri: userProfile.photoURL }
           } 
-          style={{height: 40, width: 40, borderRadius: 25}}
+          style={{height: 45, width: 45, borderRadius: 25}}
         />
         ) : <UserCircle size={45} weight={"light"} color="#fff" />}
         <Text style={style.helloUser}>Hey, </Text>
-        <Text style={style.userName}>{userProfile.displayName}</Text>
+        <Text style={style.userName}>{userProfile.displayName?.split(" ")[0]}</Text>
       </View>
       <View style={style.manageIconsContainer}>
-        <Pressable>
+        <Pressable onPress={goToEditProfile}>
           <Gear size={45} color="#fff"/>
         </Pressable>
         <Pressable style={style.signinOutBtn} onPress={handleLogout}>

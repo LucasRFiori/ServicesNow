@@ -25,6 +25,7 @@ type Params = {
 }
 
 export function CreateAccountWithGoogle() {
+  const [userImage, setUserImage] = useState('')
   const [fname, setFname] = useState('')
   const [lname, setLname] = useState('')
   const [email, setEmail] = useState('')
@@ -40,6 +41,7 @@ export function CreateAccountWithGoogle() {
     const response = await fetch(`https://www.googleapis.com/oauth2/v2/userinfo?alt=json&access_token=${token}`)
     const userInfo: Profile = await response.json();
 
+    setUserImage(userInfo.picture)
     setFname(userInfo.given_name)
     setLname(userInfo.family_name)
     setEmail(userInfo.email)
@@ -58,7 +60,8 @@ export function CreateAccountWithGoogle() {
       auth().createUserWithEmailAndPassword(email, password)
       .then(res => (
         res.user.updateProfile({
-          displayName: fname + ' '+ lname
+          displayName: fname + ' '+ lname,
+          photoURL: userImage
         }),
         navigation.goBack(),
         Alert.alert('Account created!')

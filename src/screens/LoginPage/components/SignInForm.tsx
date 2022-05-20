@@ -24,7 +24,6 @@ export function SignInForm() {
         setTimeout(() => {
           navigate.navigate("ListAnnouncement")
         }, 500) // await signIn
-        console.log(user)
       }catch(e: any){
         if(e.code == 'auth/user-not-found'){
           Alert.alert('User not found!')

@@ -6,6 +6,7 @@ export declare global {
       CreateAccount: {
         token: string;
       }
+      EditProfile: undefined;
     }
   }
 }
