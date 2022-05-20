@@ -21,7 +21,6 @@ export function Header() {
       if (user) {
         setUserProfile(user)
       }
-      console.log('rendered')
     })
   }, [])
 

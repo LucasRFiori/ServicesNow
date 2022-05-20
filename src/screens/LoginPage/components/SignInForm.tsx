@@ -25,9 +25,17 @@ export function SignInForm() {
           navigate.navigate("ListAnnouncement")
         }, 500) // await signIn
       }catch(e: any){
-        if(e.code == 'auth/user-not-found'){
+        console.log(e)
+        if(e.code == 'auth/user-not-found') {
           Alert.alert('User not found!')
+          return
         }
+        if(e.code == 'auth/wrong-password') {
+          Alert.alert('Wrong password!')
+          return
+        }
+
+        Alert.alert(e.code)
       }
     }else {
       Alert.alert('Email or password are incorrets!')

@@ -65,7 +65,6 @@ export default function EditProfileForm() {
 
   useEffect(() => {
     recoveryCurrentUserInformations();
-    console.log(userProfile)
     if(userProfile.displayName) {
       setFname(userProfile.displayName.split(' ')[0])
       setLname(userProfile.displayName.split(' ')[1])

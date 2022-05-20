@@ -4,11 +4,6 @@ import { Header } from "../components/GlobalComponents/Header";
 import { globalStyles } from "../styles/globalStyles";
 
 export function ListAnnouncement() {
-
-  useEffect(() => {
-    console.log('rendered')
-  }, [])
-  
   return(
     <View style={globalStyles.main}>
       <Header />
