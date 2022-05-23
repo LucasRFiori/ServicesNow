@@ -67,6 +67,7 @@ export function CreateAccountWithGoogle() {
         Alert.alert('Account created!')
       )
       ).catch(err => {
+        console.log(err)
         switch(err.code) {
           case 'auth/email-already-exists':
             Alert.alert('Email Already Exists!')

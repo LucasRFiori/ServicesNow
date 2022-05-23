@@ -34,7 +34,10 @@ export function CreateAccountWithEmailAndPass() {
         Alert.alert('Account created!')
       )
       ).catch(err => {
+        console.log(err)
         switch(err.code) {
+          case 'auth/email-already-in-use':
+            Alert.alert('Email Already Exists!')
           case 'auth/email-already-exists':
             Alert.alert('Email Already Exists!')
           case 'auth/invalid-email':
