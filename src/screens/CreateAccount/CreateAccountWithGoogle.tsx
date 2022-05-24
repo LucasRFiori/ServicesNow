@@ -7,6 +7,7 @@ import { style } from './style'
 import auth from '@react-native-firebase/auth'
 import { CaretLeft } from 'phosphor-react-native'
 import * as AuthSession from 'expo-auth-session'
+import firestore from '@react-native-firebase/firestore'
 
 type Profile = {
   email: string;
@@ -55,17 +56,45 @@ export function CreateAccountWithGoogle() {
     setSelected(!isSelected)
   }
 
+  async function createUserDocument(
+    email: string | null, 
+    firstname?: string | null, 
+    image ?: string | null,
+    lastname?: string | null, 
+    uid?: string ) {
+      console.log(email, firstname, lastname, uid)
+      await firestore()
+      .collection('users')
+      .doc(uid)
+      .set({
+        createdAt: new Date(),
+        email: email,
+        firstname: firstname,
+        image: image,
+        lastname: lastname,
+        phone: '',
+        uid: uid
+      })
+  }
+
   function handleCreateUserAccount() { //criar conta no firebase
     if(fname.trim().length > 1 && lname.trim().length > 1){
       auth().createUserWithEmailAndPassword(email, password)
-      .then(res => (
+      .then(res => {
         res.user.updateProfile({
           displayName: fname + ' '+ lname,
           photoURL: userImage
         }),
+        createUserDocument(
+          res?.user?.email,
+          fname,
+          userImage,
+          lname,
+          res.user.uid
+        )
         navigation.goBack(),
         Alert.alert('Account created!')
-      )
+      }
       ).catch(err => {
         console.log(err)
         switch(err.code) {
@@ -75,6 +104,8 @@ export function CreateAccountWithGoogle() {
             Alert.alert('Invalid Email')
           case 'auth/invalid-password':
             Alert.alert('Invalid password must be 6 characters')
+          case 'auth/email-already-in-use':
+            Alert.alert('Email already in use!')
         }
       })
     }else {

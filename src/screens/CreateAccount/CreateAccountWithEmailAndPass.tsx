@@ -4,9 +4,8 @@ import { globalStyles } from '../styles/globalStyles'
 import { CheckBoxTerms } from './CheckBoxTerms'
 import { style } from './style'
 import auth from '@react-native-firebase/auth'
-import { useNavigation, useRoute } from '@react-navigation/native'
-
-
+import { useNavigation } from '@react-navigation/native'
+import firestore from '@react-native-firebase/firestore'
 
 export function CreateAccountWithEmailAndPass() {
   const navigation = useNavigation();
@@ -21,29 +20,51 @@ export function CreateAccountWithEmailAndPass() {
     setSelected(!isSelected)
   }
 
-  
+  async function createUserDocument(
+    email: string | null, 
+    firstname?: string | null, 
+    lastname?: string | null, 
+    uid?: string ) {
+      console.log(email, firstname, lastname, uid)
+      await firestore()
+      .collection('users')
+      .doc(uid)
+      .set({
+        createdAt: new Date(),
+        email: email,
+        firstname: firstname,
+        image: '',
+        lastname: lastname,
+        phone: '',
+        uid: uid
+      })
+  }
 
   function handleCreateUserAccount() { //criar conta no firebase
     if(fname && lname){
       auth().createUserWithEmailAndPassword(email, password)
-      .then(res => (
+      .then(res => {
         res.user.updateProfile({
           displayName: fname + ' '+ lname
-        }),
-        navigation.goBack(),
+        })
+        createUserDocument(res?.user?.email,
+        fname,
+        lname,
+        res.user.uid
+        )
+        navigation.goBack()
         Alert.alert('Account created!')
-      )
-      ).catch(err => {
+      }).catch(err => {
         console.log(err)
         switch(err.code) {
-          case 'auth/email-already-in-use':
-            Alert.alert('Email Already Exists!')
           case 'auth/email-already-exists':
             Alert.alert('Email Already Exists!')
           case 'auth/invalid-email':
             Alert.alert('Invalid Email')
           case 'auth/invalid-password':
             Alert.alert('Invalid password must be 6 characters')
+          case 'auth/email-already-in-use':
+            Alert.alert('Email already in use!')
         }
       })
     }else {
