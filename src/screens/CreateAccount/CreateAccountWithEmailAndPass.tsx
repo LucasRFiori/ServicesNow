@@ -25,7 +25,6 @@ export function CreateAccountWithEmailAndPass() {
     firstname?: string | null, 
     lastname?: string | null, 
     uid?: string ) {
-      console.log(email, firstname, lastname, uid)
       await firestore()
       .collection('users')
       .doc(uid)
