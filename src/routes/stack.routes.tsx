@@ -5,6 +5,7 @@ import { CreateAccount } from '../screens/CreateAccount';
 import { useEffect, useState } from 'react';
 import auth from '@react-native-firebase/auth'
 import { EditProfile } from '../screens/EditProfile';
+import { CreateAnnounce } from '../screens/CreateAnnounce';
 
 const { Screen, Navigator } = createNativeStackNavigator();
 type User = {
@@ -32,7 +33,7 @@ export function StackRoutes() {
       > 
         <Screen
           name="LoginPage"
-          component={LoginPage}
+          component={CreateAnnounce}
         />
 
         {user && (
@@ -66,6 +67,11 @@ export function StackRoutes() {
           <Screen
             name="EditProfile"
             component={EditProfile}
+          />
+
+          <Screen
+            name="CreateAnnounce"
+            component={CreateAnnounce}
           />
         
       </Navigator>

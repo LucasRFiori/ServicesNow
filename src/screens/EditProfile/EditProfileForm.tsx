@@ -4,11 +4,9 @@ import { style } from './style'
 import { globalStyles } from '../styles/globalStyles'
 import * as ImagePicker from 'expo-image-picker';
 import { Photo } from '../EditProfile/components/Photo'
-import * as Permissions from 'expo-permissions'
 import { firebase, FirebaseAuthTypes } from '@react-native-firebase/auth';;
 import { CheckBox } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
-import firestore from '@react-native-firebase/firestore'
 
 export default function EditProfileForm() {
   const [image, setImage] = useState('');
@@ -62,22 +60,6 @@ export default function EditProfileForm() {
     }else{
       Alert.alert("Invalid Name")
     }
-
-    firestore()
-      .collection('users')
-      .doc(userProfile.uid)
-      .update({
-        email: userProfile.email,
-        firstname: fname.trim(),
-        image: userProfile.photoURL,
-        lastname: lname.trim(),
-        phone: userProfile.phoneNumber,
-        uid: userProfile.uid
-      }).then(res => {
-        
-      }).catch(err => {
-        console.log('DOC = ', err)
-      })
   }
 
   useEffect(() => {

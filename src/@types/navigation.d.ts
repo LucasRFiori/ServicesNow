@@ -7,6 +7,7 @@ export declare global {
         token: string;
       }
       EditProfile: undefined;
+      CreateAnnounce: undefined;
     }
   }
 }

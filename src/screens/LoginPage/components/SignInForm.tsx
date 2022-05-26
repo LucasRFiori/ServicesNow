@@ -47,6 +47,7 @@ export function SignInForm() {
       <TextInput
         style={[styles.loginInputStyle, styles.firstInput]}
         placeholder="E-mail"
+        keyboardType="email-address"
         placeholderTextColor="#888888"
         onChangeText={setEmail}
       />

@@ -4,6 +4,7 @@ import { style } from "./style";
 import { Gear, SignOut, UserCircle } from "phosphor-react-native";
 import auth, { firebase, FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { useNavigation } from "@react-navigation/native";
+import firestore from '@react-native-firebase/firestore'
 
 export function Header() {
   const [userProfile, setUserProfile] = useState({} as FirebaseAuthTypes.User)
@@ -20,6 +21,21 @@ export function Header() {
       const user = firebase.auth().currentUser;
       if (user) {
         setUserProfile(user)
+        firestore()
+          .collection('users')
+          .doc(user.uid)
+          .update({
+            email: user.email,
+            firstname: user.displayName?.split(" ")[0],
+            image: user.photoURL,
+            lastname: user.displayName?.split(" ")[1],
+            phone: user.phoneNumber,
+            uid: user.uid
+          }).then(res => {
+            
+          }).catch(err => {
+            console.log('DOC = ', err)
+          })
       }
     })
   }, [])

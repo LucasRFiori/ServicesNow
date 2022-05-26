@@ -1,3 +1,4 @@
+import { ImageSquare } from 'phosphor-react-native';
 import React from 'react';
 import { TouchableOpacity, TouchableOpacityProps } from 'react-native';
 
@@ -15,7 +16,7 @@ export function Photo({ uri, ...rest }: Props) {
           uri ? <Image source={{ uri }} /> : (
             <EmptyPhotoContainer>
               <EmptyPhotoText>
-                No image selected
+                <ImageSquare size={32} color="#fff" />
               </EmptyPhotoText>
             </EmptyPhotoContainer >
           )
