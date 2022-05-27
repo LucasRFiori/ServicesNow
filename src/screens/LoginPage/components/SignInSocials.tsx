@@ -36,14 +36,9 @@ export function SignInSocials() {
   
   return (
     <View style={styles.socialNetworkButtons}>
-      <Pressable style={styles.facebookBtn}>
-        <FacebookIcon />
-        <Text style={styles.facebookBtnText}>Login with Facebook</Text>
-      </Pressable>
-
       <Pressable style={styles.googleBtn} onPress={handleSignIn}>
         <GoogleIcon width="30" height="60"/>
-        <Text style={styles.googleBtnText}>Login with Google</Text>
+        <Text style={styles.googleBtnText}>Create Account with Google</Text>
       </Pressable>
     </View>
   )

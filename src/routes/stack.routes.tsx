@@ -33,7 +33,7 @@ export function StackRoutes() {
       > 
         <Screen
           name="LoginPage"
-          component={CreateAnnounce}
+          component={LoginPage}
         />
 
         {user && (

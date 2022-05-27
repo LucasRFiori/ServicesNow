@@ -1,13 +1,25 @@
-import { View, Text, Image, Alert, Pressable } from "react-native";
+import { View, Text, Image, Alert, Pressable, Keyboard } from "react-native";
 import { globalStyles } from "../styles/globalStyles";
 import * as ImagePicker from 'expo-image-picker';
 import React, { useState } from "react";
 import { Photo } from "../EditProfile/components/Photo";
 import storage, { FirebaseStorageTypes } from '@react-native-firebase/storage'
+import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { Box, BoxTwo, Input, InputSizeDiv, Span, TextArea, CreateAnnounceButton, WhiteContainer } from "./style";
+import { Header } from "../components/GlobalComponents/Header";
+import firestore from '@react-native-firebase/firestore'
+import { useNavigation } from "@react-navigation/native";
 
 export function CreateAnnounce() {
-  const [image, setImage] = useState<string[]>([])
+  const navigation = useNavigation()
+  const [images, setImages] = useState<string[]>([])
   const [imagesUrl, setImagesUrl] = useState<string[]>([])
+  const [title, setTitle] = useState<string>('')
+  const [initialDate, setInitialDate] = useState<string>('')
+  const [finalDate, setFinalDate] = useState<string>('')
+  const [fromPrice, setFromPrice ] = useState<string>('')
+  const [toPrice, setToPrice] = useState<string>('')
+  const [description, setDescription] = useState<string>('')
 
   async function handlePickImage() {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -20,14 +32,14 @@ export function CreateAnnounce() {
       });
 
       if (!result.cancelled) {
-        setImage([...image, result.uri]);
+        setImages([...images, result.uri]);
       }
     }
   };
 
   async function handleUpload() {
     const promises: FirebaseStorageTypes.Task[] = [];
-    image.map((image) => {
+    images.map((image) => {
       const fileName = Math.ceil(Math.random() * 50000)
       const reference = storage().ref(`/announceImages/${fileName}.png`)
       const uploadTask = reference.putFile(image);
@@ -36,26 +48,119 @@ export function CreateAnnounce() {
       uploadTask.then(async () => {
         const imageUrl = await reference.getDownloadURL();
         setImagesUrl([...imagesUrl, imageUrl])
-        console.log(imageUrl)
       })
     })
 
-    Promise.all(promises).then(() => Alert.alert('Acabou o upload'))
+    return Promise
+  }
+
+  async function handleCreateAnnounce() {
+    if(title?.trim()?.length >= 3 
+    && initialDate?.trim()?.length >= 10 
+    && finalDate?.trim()?.length >= 10
+    && toPrice?.trim()?.length >= 5
+    && description?.trim().length >= 1){
+      await handleUpload()
+
+      await firestore()
+      .collection('announcements')
+      .add({
+        createdAt: new Date(),
+        Title: title,
+        InitialDate: initialDate,
+        FinalDate: finalDate,
+        FromPrice: fromPrice ? fromPrice : null,
+        ToPrice: toPrice,
+        Description: description,
+        Images: imagesUrl
+      })
+      Alert.alert('Announce created.')
+      navigation.navigate("ListAnnouncement")
+    }else {
+      Alert.alert('Failed, try again.')
+    }
   }
 
   return(
     <>
-    <Photo onPress={handlePickImage} />
-    {image && image.map((img) => (
-      <Photo key={img} uri={img} style={{width: 50, height: 50}}/>
-    )
-    )}
-    <View style={globalStyles.container}>
-      <Text>Annnounce</Text>
+    <Header />
+    <View style={globalStyles.main}>
+          <View style={{
+            flexDirection: "row",
+            alignItems: "center"
+          }}>
+            <Photo onPress={handlePickImage} />
+          {images && (
+            <FlatList 
+            data={images} 
+            horizontal
+            renderItem={(image) => {
+              return <Image 
+                style={{width: 140, height: 140, marginTop: 20}} 
+                source={{
+                  uri: image.item
+                }}
+                resizeMode="cover"
+              /> 
+            }}
+            />
+          )}
+        </View>
+        <ScrollView contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: 'center',
+        }}>
+        <WhiteContainer>
+          <Box>
+            <Span>Title</Span>
+            <Input placeholder="Insert announce title" onChangeText={setTitle}/>
+          </Box>
+          <Box>
+            <Span>Date</Span>
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+              <BoxTwo>
+                <Text>Initial Date</Text>
+                <InputSizeDiv onChangeText={setInitialDate}/>
+              </BoxTwo>
+              <BoxTwo>
+                <Text>Final Date</Text>
+                <InputSizeDiv onChangeText={setFinalDate}/>
+              </BoxTwo>
+            </View>
+          </Box>
+          <Box>
+            <Span>Price Table</Span>
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+              <BoxTwo>
+                <Text>From</Text>
+                <InputSizeDiv placeholder="$" onChangeText={setFromPrice}/>
+              </BoxTwo>
+              <BoxTwo>
+                <Text>To</Text>
+                <InputSizeDiv placeholder="$" onChangeText={setToPrice}/>
+              </BoxTwo>
+            </View>
+          </Box>
+          <Box>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <Span>Description</Span>
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+            <TextArea 
+              placeholder="Insert description here..."
+              multiline
+              onChangeText={setDescription}
+              />
+            </View>
+          </TouchableWithoutFeedback>
+          </Box>
+          <Box>
+            <CreateAnnounceButton onPress={handleCreateAnnounce}>
+              <Text style={{ fontSize: 15,color: '#fff', fontWeight: "600"}}>Create Announce</Text>
+            </CreateAnnounceButton>
+          </Box>
+        </WhiteContainer>
+        </ScrollView>
     </View>
-    <Pressable onPress={handleUpload} style={{width: 100, height: 100, backgroundColor: '#000'}}>
-      <Text>UPLOAD</Text>
-    </Pressable>
     </>
   )
 }

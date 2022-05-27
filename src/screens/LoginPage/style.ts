@@ -68,7 +68,6 @@ export const styles = StyleSheet.create({
     height: 45,
     borderRadius: 25,
     flexDirection: "row",
-    marginTop: 21,
     marginBottom: 35
   },
   googleBtnText: {
