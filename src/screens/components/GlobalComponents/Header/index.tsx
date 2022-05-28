@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, Pressable } from "react-native";
 import { style } from "./style";
-import { Gear, SignOut, UserCircle } from "phosphor-react-native";
+import { CaretLeft, Gear, SignOut, UserCircle } from "phosphor-react-native";
 import auth, { firebase, FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 import firestore from '@react-native-firebase/firestore'
+import GoBackButton from "../../../CreateAccount/GoBackButton";
 
-export function Header() {
+type HeaderProps = {
+  isFirstView?: boolean;
+}
+export function Header({isFirstView}: HeaderProps) {
   const [userProfile, setUserProfile] = useState({} as FirebaseAuthTypes.User)
   const navigation = useNavigation();
 
@@ -54,9 +58,17 @@ export function Header() {
     navigation.navigate("EditProfile")
   }
 
+  function handleGoBack() {
+    navigation.goBack()
+  }
+
   return(
     <View style={style.headerMain}>
       <View style={style.userInfoContainer}>
+      {isFirstView && (
+        <Pressable onPress={handleGoBack} style={{marginRight: 10}}>
+          <CaretLeft size={32} color="#fff"/>
+        </Pressable>)}
         {userProfile.photoURL ? (
           <Image 
           source={

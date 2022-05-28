@@ -13,7 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 export function CreateAnnounce() {
   const navigation = useNavigation()
   const [images, setImages] = useState<string[]>([])
-  const [imagesUrl, setImagesUrl] = useState<string[]>([])
+  const imagesUrl = [] as string[]
   const [title, setTitle] = useState<string>('')
   const [initialDate, setInitialDate] = useState<string>('')
   const [finalDate, setFinalDate] = useState<string>('')
@@ -37,9 +37,29 @@ export function CreateAnnounce() {
     }
   };
 
-  async function handleUpload() {
+  function handleCreateAnnounce() {
+    firestore()
+    .collection('announcements')
+    .add({
+      createdAt: new Date().getTime(),
+      Title: title,
+      InitialDate: initialDate,
+      FinalDate: finalDate,
+      FromPrice: fromPrice ? fromPrice : null,
+      ToPrice: toPrice,
+      Description: description,
+      Images: imagesUrl
+    }).then(() => {
+      console.log(imagesUrl)
+      Alert.alert('Announce created.')
+      navigation.navigate("ListAnnouncement")
+    })
+  }
+
+  function handleUpload() {
     const promises: FirebaseStorageTypes.Task[] = [];
-    images.map((image) => {
+    let i = 0
+    images.forEach((image, index) => {
       const fileName = Math.ceil(Math.random() * 50000)
       const reference = storage().ref(`/announceImages/${fileName}.png`)
       const uploadTask = reference.putFile(image);
@@ -47,43 +67,18 @@ export function CreateAnnounce() {
 
       uploadTask.then(async () => {
         const imageUrl = await reference.getDownloadURL();
-        setImagesUrl([...imagesUrl, imageUrl])
+        imagesUrl.push(imageUrl)
+        i++;
+        if(i === images.length){
+          handleCreateAnnounce()
+        }
       })
     })
-
-    return Promise
-  }
-
-  async function handleCreateAnnounce() {
-    if(title?.trim()?.length >= 3 
-    && initialDate?.trim()?.length >= 10 
-    && finalDate?.trim()?.length >= 10
-    && toPrice?.trim()?.length >= 5
-    && description?.trim().length >= 1){
-      await handleUpload()
-
-      await firestore()
-      .collection('announcements')
-      .add({
-        createdAt: new Date(),
-        Title: title,
-        InitialDate: initialDate,
-        FinalDate: finalDate,
-        FromPrice: fromPrice ? fromPrice : null,
-        ToPrice: toPrice,
-        Description: description,
-        Images: imagesUrl
-      })
-      Alert.alert('Announce created.')
-      navigation.navigate("ListAnnouncement")
-    }else {
-      Alert.alert('Failed, try again.')
-    }
   }
 
   return(
     <>
-    <Header />
+    <Header isFirstView={true}/>
     <View style={globalStyles.main}>
           <View style={{
             flexDirection: "row",
@@ -154,7 +149,7 @@ export function CreateAnnounce() {
           </TouchableWithoutFeedback>
           </Box>
           <Box>
-            <CreateAnnounceButton onPress={handleCreateAnnounce}>
+            <CreateAnnounceButton onPress={handleUpload}>
               <Text style={{ fontSize: 15,color: '#fff', fontWeight: "600"}}>Create Announce</Text>
             </CreateAnnounceButton>
           </Box>
