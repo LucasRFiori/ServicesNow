@@ -90,9 +90,10 @@ export function CreateAccountWithGoogle() {
           userImage,
           lname,
           res.user.uid
-        )
-        navigation.goBack(),
-        Alert.alert('Account created!')
+        ).then(() => {
+          navigation.navigate("LoginPage")
+          Alert.alert('Account created!')
+        })
       }
       ).catch(err => {
         console.log(err)
