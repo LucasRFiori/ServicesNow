@@ -53,7 +53,7 @@ export const TextArea = styled.TextInput`
   border-radius: 5px;
   width: 100%;
   height: 120px;
-  padding-left: 5px
+  padding-left: 5px;
 `
 
 export const CreateAnnounceButton = styled.Pressable`

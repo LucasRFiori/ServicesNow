@@ -1,7 +1,7 @@
-import { View, Text, Image, Alert, Pressable, Keyboard } from "react-native";
+import { View, Text, Image, Alert, Pressable, Keyboard, ActivityIndicator } from "react-native";
 import { globalStyles } from "../styles/globalStyles";
 import * as ImagePicker from 'expo-image-picker';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Photo } from "../EditProfile/components/Photo";
 import storage, { FirebaseStorageTypes } from '@react-native-firebase/storage'
 import { FlatList, ScrollView, TextInput, TouchableWithoutFeedback } from "react-native-gesture-handler";
@@ -11,6 +11,7 @@ import firestore from '@react-native-firebase/firestore'
 import { useNavigation } from "@react-navigation/native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import MaskInput, { createNumberMask } from 'react-native-mask-input';
+import { firebase, FirebaseAuthTypes } from "@react-native-firebase/auth";
 
 export function CreateAnnounce() {
   const navigation = useNavigation()
@@ -24,6 +25,15 @@ export function CreateAnnounce() {
   const [description, setDescription] = useState<string>('')
   const [isDatePickerOneVisible, setDatePickerOneVisibility] = useState(false);
   const [isDatePickerTwoVisible, setDatePickerTwoVisibility] = useState(false);
+  const [user, setUser] = useState({} as FirebaseAuthTypes.User)
+  const [isLoading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const user = firebase.auth().currentUser;
+    if (user) {
+      setUser(user)
+    }
+  }, [])
 
   const dollarMask = createNumberMask({
     prefix: ['$', ' '],
@@ -59,17 +69,20 @@ export function CreateAnnounce() {
       FromPrice: fromPrice ? fromPrice : null,
       ToPrice: toPrice,
       Description: description,
-      Images: imagesUrl
+      Images: imagesUrl,
+      createdBy: user.uid
     }).then(() => {
       console.log(imagesUrl)
       Alert.alert('Announce created.')
+      setLoading(false)
       navigation.navigate("ListAnnouncement")
     })
   }
 
   function handleUpload() {
     if(title && initialDate && finalDate
-      && toPrice) {
+      && toPrice && images) {
+        setLoading(true)
         const promises: FirebaseStorageTypes.Task[] = [];
         let i = 0
         images.forEach((image) => {
@@ -237,6 +250,7 @@ export function CreateAnnounce() {
           </Box>
         </WhiteContainer>
         </ScrollView>
+        {isLoading && <ActivityIndicator style={{position: "absolute"}} size="large" color="#B20600" />}
     </View>
     </>
   )

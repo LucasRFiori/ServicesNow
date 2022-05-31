@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Button} from 'react-native'
+import { View, Text, Button, Pressable} from 'react-native'
 import { Header } from "../components/GlobalComponents/Header";
 import { globalStyles } from "../styles/globalStyles";
 import { FilterAndCreateAnnounce } from "./components/FilterAndCreateAnnounce/FilterAndCreateAnnouce";
 import firestore from '@react-native-firebase/firestore'
 import { AnnounceItem } from "./components/AnnounceItem";
+import { ScrollView } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
 
 type AnnounceType = {
   id: string;
@@ -20,6 +22,7 @@ type AnnounceType = {
 
 export function ListAnnouncement() {
   const [announces, setAnnounces] = useState([] as AnnounceType[])
+  const navigation = useNavigation()
 
 
   useEffect(() => {
@@ -38,14 +41,22 @@ export function ListAnnouncement() {
       return() => subscribe();
   }, [])
 
+  const goToViewAnnounce = (id: string) => {
+    navigation.navigate("ViewAnnounce", { AnnounceId: id })
+  }
+
   return(
     <View style={globalStyles.main}>
       <Header isFirstPage/>
       <FilterAndCreateAnnounce />
       <View style={{flex: 1, justifyContent: "flex-start", alignItems: "center"}}>
-        {announces && announces.map((item, index) => (
-          <AnnounceItem announce={item} key={index} />
-        ))}
+        <ScrollView>
+          {announces && announces.map((item, index) => (
+            <Pressable key={index} onPress={() => goToViewAnnounce(item.id)}>
+              <AnnounceItem announce={item} />
+            </Pressable>
+          ))}
+        </ScrollView>
       </View>
       </View>
   )

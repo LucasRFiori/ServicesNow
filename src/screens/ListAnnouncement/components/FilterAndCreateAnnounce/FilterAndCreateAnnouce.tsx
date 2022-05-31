@@ -4,8 +4,6 @@ import React from 'react';
 import { Pressable } from 'react-native';
 import { Container, CreateAnnouncePressable, TextCreateAnnounce } from './style';
 
-// import { Container } from './styles';
-
 export function FilterAndCreateAnnounce() {
   const navigation = useNavigation()
 

@@ -8,6 +8,9 @@ export declare global {
       }
       EditProfile: undefined;
       CreateAnnounce: undefined;
+      ViewAnnounce: {
+        AnnounceId: string;
+      };
     }
   }
 }

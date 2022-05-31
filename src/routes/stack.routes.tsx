@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import auth from '@react-native-firebase/auth'
 import { EditProfile } from '../screens/EditProfile';
 import { CreateAnnounce } from '../screens/CreateAnnounce';
+import { ViewAnnounce } from '../screens/ViewAnnounce';
 
 const { Screen, Navigator } = createNativeStackNavigator();
 type User = {
@@ -72,6 +73,11 @@ export function StackRoutes() {
           <Screen
             name="CreateAnnounce"
             component={CreateAnnounce}
+          />
+
+          <Screen
+            name="ViewAnnounce"
+            component={ViewAnnounce}
           />
         
       </Navigator>

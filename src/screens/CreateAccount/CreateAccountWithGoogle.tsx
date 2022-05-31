@@ -77,7 +77,7 @@ export function CreateAccountWithGoogle() {
   }
 
   function handleCreateUserAccount() { //criar conta no firebase
-    if(fname.trim().length > 1 && lname.trim().length > 1){
+    if(fname.trim().length > 1 && lname.trim().length > 1 && password.length >= 6){
       auth().createUserWithEmailAndPassword(email, password)
       .then(res => {
         res.user.updateProfile({

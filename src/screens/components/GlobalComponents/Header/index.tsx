@@ -5,7 +5,6 @@ import { CaretLeft, Gear, SignOut, UserCircle } from "phosphor-react-native";
 import auth, { firebase, FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 import firestore from '@react-native-firebase/firestore'
-import GoBackButton from "../../../CreateAccount/GoBackButton";
 
 type HeaderProps = {
   isFirstPage?: boolean;
