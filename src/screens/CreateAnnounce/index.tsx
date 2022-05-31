@@ -4,11 +4,13 @@ import * as ImagePicker from 'expo-image-picker';
 import React, { useState } from "react";
 import { Photo } from "../EditProfile/components/Photo";
 import storage, { FirebaseStorageTypes } from '@react-native-firebase/storage'
-import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { FlatList, ScrollView, TextInput, TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { Box, BoxTwo, Input, InputSizeDiv, Span, TextArea, CreateAnnounceButton, WhiteContainer } from "./style";
 import { Header } from "../components/GlobalComponents/Header";
 import firestore from '@react-native-firebase/firestore'
 import { useNavigation } from "@react-navigation/native";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import MaskInput, { createNumberMask } from 'react-native-mask-input';
 
 export function CreateAnnounce() {
   const navigation = useNavigation()
@@ -20,6 +22,15 @@ export function CreateAnnounce() {
   const [fromPrice, setFromPrice ] = useState<string>('')
   const [toPrice, setToPrice] = useState<string>('')
   const [description, setDescription] = useState<string>('')
+  const [isDatePickerOneVisible, setDatePickerOneVisibility] = useState(false);
+  const [isDatePickerTwoVisible, setDatePickerTwoVisibility] = useState(false);
+
+  const dollarMask = createNumberMask({
+    prefix: ['$', ' '],
+    delimiter: '.',
+    separator: ',',
+    precision: 2,
+  })
 
   async function handlePickImage() {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -57,28 +68,53 @@ export function CreateAnnounce() {
   }
 
   function handleUpload() {
-    const promises: FirebaseStorageTypes.Task[] = [];
-    let i = 0
-    images.forEach((image, index) => {
-      const fileName = Math.ceil(Math.random() * 50000)
-      const reference = storage().ref(`/announceImages/${fileName}.png`)
-      const uploadTask = reference.putFile(image);
-      promises.push(uploadTask);
-
-      uploadTask.then(async () => {
-        const imageUrl = await reference.getDownloadURL();
-        imagesUrl.push(imageUrl)
-        i++;
-        if(i === images.length){
-          handleCreateAnnounce()
-        }
-      })
-    })
+    if(title && initialDate && finalDate
+      && toPrice) {
+        const promises: FirebaseStorageTypes.Task[] = [];
+        let i = 0
+        images.forEach((image) => {
+          const fileName = Math.ceil(Math.random() * 50000)
+          const reference = storage().ref(`/announceImages/${fileName}.png`)
+          const uploadTask = reference.putFile(image);
+          promises.push(uploadTask);
+    
+          uploadTask.then(async () => {
+            const imageUrl = await reference.getDownloadURL();
+            imagesUrl.push(imageUrl)
+            i++;
+            if(i === images.length){
+              handleCreateAnnounce()
+            }
+          })
+        })
+      }else {
+        Alert.alert('Verify mandatory fields (Title, Dates, To Price)')
+      }
   }
+
+  const handleDateOnePicker = () => {
+    setDatePickerOneVisibility(!isDatePickerOneVisible);
+  };
+
+  const handleDateTwoPicker = () => {
+    setDatePickerTwoVisibility(!isDatePickerTwoVisible);
+  };
+
+  const handleConfirmInitialDate = (date: Date) => {
+    let formatDateToBr = (date.getDate() <= 9 ? '0' + (date.getDate()) : (date.getDate())) + "/" + (date.getMonth() <= 9 ? '0' + ( date.getMonth() + 1) : (date.getMonth() + 1)) + "/" + date.getFullYear(); 
+    setInitialDate(formatDateToBr)
+    handleDateOnePicker();
+  };
+
+  const handleConfirmFinalDate = (date: Date) => {
+    let formatDateToBr = (date.getDate() <= 9 ? '0' + (date.getDate()) : (date.getDate())) + "/" + (date.getMonth() <= 9 ? '0' + ( date.getMonth() + 1) : (date.getMonth() + 1)) + "/" + date.getFullYear(); 
+    setFinalDate(formatDateToBr)
+    handleDateTwoPicker();
+  };
 
   return(
     <>
-    <Header isFirstView={true}/>
+    <Header />
     <View style={globalStyles.main}>
           <View style={{
             flexDirection: "row",
@@ -115,11 +151,29 @@ export function CreateAnnounce() {
             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
               <BoxTwo>
                 <Text>Initial Date</Text>
-                <InputSizeDiv onChangeText={setInitialDate}/>
+                <Pressable onPress={handleDateOnePicker}>
+                  <InputSizeDiv editable={false} defaultValue={initialDate} style={{color: '#000'}}/>
+                </Pressable>
+                  <DateTimePickerModal
+                  isVisible={isDatePickerOneVisible}
+                  mode="date"
+                  date={new Date()}
+                  onConfirm={handleConfirmInitialDate}
+                  onCancel={handleDateOnePicker}
+                  />
               </BoxTwo>
               <BoxTwo>
                 <Text>Final Date</Text>
-                <InputSizeDiv onChangeText={setFinalDate}/>
+                <Pressable onPress={handleDateTwoPicker}>
+                  <InputSizeDiv editable={false} defaultValue={finalDate} style={{color: '#000'}}/>
+                </Pressable>
+                  <DateTimePickerModal
+                  isVisible={isDatePickerTwoVisible}
+                  mode="date"
+                  date={new Date()}
+                  onConfirm={handleConfirmFinalDate}
+                  onCancel={handleDateTwoPicker}
+                  />
               </BoxTwo>
             </View>
           </Box>
@@ -128,11 +182,39 @@ export function CreateAnnounce() {
             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
               <BoxTwo>
                 <Text>From</Text>
-                <InputSizeDiv placeholder="$" onChangeText={setFromPrice}/>
+                <MaskInput
+                value={fromPrice}
+                mask={dollarMask}
+                onChangeText={(masked, unmasked) => {
+                  setFromPrice(masked)
+                }}
+                style={{
+                  height: 40,
+                  paddingLeft: 5,
+                  width: '100%',
+                  borderWidth: 1,
+                  borderColor: '#ccc',
+                  borderRadius: 5
+                }}
+              />
               </BoxTwo>
               <BoxTwo>
                 <Text>To</Text>
-                <InputSizeDiv placeholder="$" onChangeText={setToPrice}/>
+                <MaskInput
+                value={toPrice}
+                mask={dollarMask}
+                onChangeText={(masked, unmasked) => {
+                  setToPrice(masked)
+                }}
+                style={{
+                  height: 40,
+                  paddingLeft: 5,
+                  width: '100%',
+                  borderWidth: 1,
+                  borderColor: '#ccc',
+                  borderRadius: 5
+                }}
+              />
               </BoxTwo>
             </View>
           </Box>

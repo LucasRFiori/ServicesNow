@@ -8,9 +8,9 @@ import firestore from '@react-native-firebase/firestore'
 import GoBackButton from "../../../CreateAccount/GoBackButton";
 
 type HeaderProps = {
-  isFirstView?: boolean;
+  isFirstPage?: boolean;
 }
-export function Header({isFirstView}: HeaderProps) {
+export function Header({isFirstPage}: HeaderProps) {
   const [userProfile, setUserProfile] = useState({} as FirebaseAuthTypes.User)
   const navigation = useNavigation();
 
@@ -65,7 +65,7 @@ export function Header({isFirstView}: HeaderProps) {
   return(
     <View style={style.headerMain}>
       <View style={style.userInfoContainer}>
-      {isFirstView && (
+      {!isFirstPage && (
         <Pressable onPress={handleGoBack} style={{marginRight: 10}}>
           <CaretLeft size={32} color="#fff"/>
         </Pressable>)}

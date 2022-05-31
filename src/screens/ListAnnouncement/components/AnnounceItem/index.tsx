@@ -1,6 +1,7 @@
+import { Calendar } from "phosphor-react-native";
 import React, { useEffect, useState } from "react"
 import { View, Text, Image } from "react-native"
-import { Container, Title } from "./style";
+import { Container, InfoContainer, Title } from "./style";
 
 type AnnounceTypeProps = {
   announce: {
@@ -29,12 +30,7 @@ type AnnounceType = {
 }
 
 export function AnnounceItem({ announce } :AnnounceTypeProps) {
-  const [announces, setAnnounces] = useState({} as AnnounceType)
-
-  useEffect(() => {
-    setAnnounces(announce)
-  }, [])
-
+  console.log(announce)
 
   return(
     <Container>
@@ -43,9 +39,11 @@ export function AnnounceItem({ announce } :AnnounceTypeProps) {
           uri: announce.Images[0]
         }
       }
-      
       style={{width: 70, height: 70}}/>
-      <Title>{announce.Title}</Title>
+      <InfoContainer>
+        <Title>{announce.Title}</Title>
+        <Calendar size={28} />
+      </InfoContainer>
     </Container>
   )
 }

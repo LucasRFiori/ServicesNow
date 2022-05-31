@@ -10,8 +10,11 @@ export const  Container = styled.View`
   border-radius: 20px;
   margin: 10px 0;
 `
-
-export const Title = styled.Text`
-  font-size: 20px;
+export const InfoContainer = styled.View`
   margin-left: 10px;
+`;
+export const Title = styled.Text`
+  font-size: 17px;
+  font-weight: 500;
+  color: '#00092C';
 `

@@ -40,7 +40,7 @@ export function ListAnnouncement() {
 
   return(
     <View style={globalStyles.main}>
-      <Header />
+      <Header isFirstPage/>
       <FilterAndCreateAnnounce />
       <View style={{flex: 1, justifyContent: "flex-start", alignItems: "center"}}>
         {announces && announces.map((item, index) => (
