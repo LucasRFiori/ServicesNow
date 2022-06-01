@@ -76,7 +76,7 @@ export function CreateAccountWithGoogle() {
       })
   }
 
-  function handleCreateUserAccount() { //criar conta no firebase
+  function handleCreateUserAccount() {
     if(fname.trim().length > 1 && lname.trim().length > 1 && password.length >= 6){
       auth().createUserWithEmailAndPassword(email, password)
       .then(res => {
@@ -96,7 +96,6 @@ export function CreateAccountWithGoogle() {
         })
       }
       ).catch(err => {
-        console.log(err)
         switch(err.code) {
           case 'auth/email-already-exists':
             Alert.alert('Email Already Exists!')
@@ -119,7 +118,6 @@ export function CreateAccountWithGoogle() {
 
       navigation.goBack()
     } catch (error) {
-      console.log('ERROR XXX', error)
     }
   }
 

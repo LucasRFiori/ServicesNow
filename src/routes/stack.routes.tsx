@@ -23,7 +23,7 @@ export function StackRoutes() {
     })
 
     return subscriber
-  }, []) // observar se usuario esta logado
+  }, [])
   
   return (
     <>

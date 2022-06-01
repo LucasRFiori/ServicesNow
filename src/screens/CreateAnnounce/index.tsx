@@ -72,7 +72,6 @@ export function CreateAnnounce() {
       Images: imagesUrl,
       createdBy: user.uid
     }).then(() => {
-      console.log(imagesUrl)
       Alert.alert('Announce created.')
       setLoading(false)
       navigation.navigate("ListAnnouncement")

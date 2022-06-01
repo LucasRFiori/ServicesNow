@@ -39,7 +39,7 @@ export function CreateAccountWithEmailAndPass() {
       })
   }
 
-  function handleCreateUserAccount() { //criar conta no firebase
+  function handleCreateUserAccount() {
     if(fname && lname){
       auth().createUserWithEmailAndPassword(email, password)
       .then(res => {
@@ -54,7 +54,6 @@ export function CreateAccountWithEmailAndPass() {
         navigation.goBack()
         Alert.alert('Account created!')
       }).catch(err => {
-        console.log(err)
         switch(err.code) {
           case 'auth/email-already-exists':
             Alert.alert('Email Already Exists!')

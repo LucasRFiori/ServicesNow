@@ -23,9 +23,8 @@ export function SignInForm() {
         const { user } = await auth().signInWithEmailAndPassword(email, password)
         setTimeout(() => {
           navigate.navigate("ListAnnouncement")
-        }, 500) // await signIn
+        }, 500)
       }catch(e: any){
-        console.log(e)
         if(e.code == 'auth/user-not-found') {
           Alert.alert('User not found!')
           return

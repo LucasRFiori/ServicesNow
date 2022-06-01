@@ -34,10 +34,6 @@ export function Header({isFirstPage}: HeaderProps) {
             lastname: user.displayName?.split(" ")[1],
             phone: user.phoneNumber,
             uid: user.uid
-          }).then(res => {
-            
-          }).catch(err => {
-            console.log('DOC = ', err)
           })
       }
     })
@@ -49,9 +45,8 @@ export function Header({isFirstPage}: HeaderProps) {
       await auth().signOut()
       navigation.navigate("LoginPage")
     }catch(err : any){
-      console.log(err)
     }
-  } // Logout
+  }
 
   function goToEditProfile() {
     navigation.navigate("EditProfile")

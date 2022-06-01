@@ -17,7 +17,7 @@ export const InfoContainer = styled.View`
 export const Title = styled.Text`
   font-size: 17px;
   font-weight: 500;
-  color: '#00092C';
+  color: #00092C;
 `
 
 export const DateContainer = styled.View`

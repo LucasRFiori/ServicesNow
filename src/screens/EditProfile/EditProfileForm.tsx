@@ -54,8 +54,6 @@ export default function EditProfileForm() {
       }).then(resp =>{
         Alert.alert('Successfully updated!')
         navigation.goBack()
-      }).catch(err => {
-        console.log(err)
       })
     }else{
       Alert.alert("Invalid Name")
