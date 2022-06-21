@@ -7,6 +7,7 @@ Neste aplicativo, foi criado uma rede social, onde as pessoas pudessem divulgar 
 
 ## Tecnologias
 
+- Expo
 - React Native
 - Styled Components
 - Firebase
